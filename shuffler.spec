@@ -5,9 +5,11 @@ from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 block_cipher = None
 
 # 收集可能隐式引入的动态库和依赖
+# 收集可能隐式引入的动态库和依赖
 hiddenimports = [
     'cv2', 'torch', 'torchvision', 'lpips', 'pywt', 'pydub',
-    'gradio', 'numpy', 'scipy', 'PIL', 'ultralytics'
+    'gradio', 'numpy', 'scipy', 'PIL', 'ultralytics',
+    'pkg_resources', 'setuptools'
 ]
 hiddenimports += collect_submodules('lpips')
 hiddenimports += collect_submodules('ultralytics')
