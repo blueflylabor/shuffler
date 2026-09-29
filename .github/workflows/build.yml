@@ -1,0 +1,37 @@
+name: Build Desktop App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller torch torchvision lpips pywavelets pydub gradio opencv-python ultralytics
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller shuffler.spec
+
+    - name: Archive Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Shuffler-${{ matrix.os }}
+        path: dist/ShufflerVideoReconstructor/
